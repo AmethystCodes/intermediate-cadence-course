@@ -24,7 +24,6 @@ transaction {
 ```
 
 2. **Write a transaction to mint some @Record.NFTs to the user's @Record.Collection**
-
 ```cadence
 import NonFungibleToken from 0x01
 import Record from 0x02
@@ -88,12 +87,58 @@ transaction(name: String) {
 ```
 
 5. **Write a script to fetch a user's &Artist.Profile, borrow their recordCollection, and return an array of all the user's &Record.NFT? in their @Record.Collection from the recordCollection**
+```cadence
+import Record from 0x02
+import Artist from 0x03
+
+pub fun main(user: Address): [UInt64] {
+   
+    let profile: &Artist.Profile = getAccount(user).getCapability(/public/Profile)
+                    .borrow<&Artist.Profile>()!
+
+    let recordCollection: &Record.Collection{Record.CollectionPublic} = profile.recordCollection.borrow()!
+
+    return recordCollection.getIDs()
+}
+```
 
 
 6. **Write a transaction to unlink a user's @Record.Collection from the public path**
+```cadence
+import Record from 0x02
+import Artist from 0x03
+
+transaction() {
+
+    prepare(signer: AuthAccount) {
+    
+        signer.unlink(Record.CollectionPublicPath)
+    }
+
+    execute {
+        log("Collection unlinked")
+    }
+
+}
+```
 
 
 7. **Explain why the recordCollection inside the user's @Artist.Profile is now invalid**
+- The `recordCollection` is now invalid because when a user unlinks a path, private or public, the capability is no longer accessible. Making it basically non existent to anyone outside the .  
 
 
 8. **Write a script that proves why your answer to #7 is true by trying to borrow a user's recordCollection from their &Artist.Profile**
+```cadence
+import Record from 0x02
+import Artist from 0x03
+
+pub fun main(user: Address): [UInt64] {
+   
+    let profile: &Artist.Profile = getAccount(user).getCapability(/public/Profile)
+                    .borrow<&Artist.Profile>()!
+
+    let recordCollection: &Record.Collection{Record.CollectionPublic} = profile.recordCollection.borrow()!
+
+    return recordCollection.getIDs()
+}
+```
