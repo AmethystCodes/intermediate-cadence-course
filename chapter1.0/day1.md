@@ -124,7 +124,7 @@ transaction() {
 
 
 7. **Explain why the recordCollection inside the user's @Artist.Profile is now invalid**
-- The `recordCollection` is now invalid because when a user unlinks a path, private or public, the capability is no longer accessible. Making it basically non existent to anyone outside the .  
+- The `recordCollection` is now invalid because when a user unlinks a path, private or public, the capability is no longer accessible. Making it basically non existent to anyone outside of the users account.  
 
 
 8. **Write a script that proves why your answer to #7 is true by trying to borrow a user's recordCollection from their &Artist.Profile**
